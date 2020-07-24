@@ -10,6 +10,7 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
+import StarsIcon from '@material-ui/icons/Stars';
 import AirlineSeatIndividualSuiteIcon from '@material-ui/icons/AirlineSeatIndividualSuite';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,6 +20,14 @@ import { styles, cardStyles } from './Cart.styles';
 interface ICoronaCardProps {
   country: ICountry;
 }
+
+const getDeathPercent = (
+  deathTotal: number,
+  totalConfirmed: number
+): number => {
+  const num = (deathTotal / totalConfirmed) * 100;
+  return Math.round(num * 10) / 10;
+};
 
 const CoronaCard: FC<ICoronaCardProps> = ({ country }: ICoronaCardProps) => {
   const { root } = makeStyles(styles)();
@@ -67,6 +76,20 @@ const CoronaCard: FC<ICoronaCardProps> = ({ country }: ICoronaCardProps) => {
           <ListItemText
             primary='Recovered'
             secondary={country.TotalRecovered}
+          />
+        </ListItem>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <StarsIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary='Percentage of deaths per cases'
+            secondary={`${getDeathPercent(
+              country.TotalDeaths,
+              country.TotalConfirmed
+            )}%`}
           />
         </ListItem>
       </CardContent>
